@@ -20,8 +20,14 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
 
     private val renderer : BLRenderer = BLRenderer(this)
 
+    var linkedBreakLineListener : LinkedBreakLineListener? = null
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addLinkedBreakLineListener(onComplete : (Int) -> Unit) {
+        linkedBreakLineListener = LinkedBreakLineListener(onComplete)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -188,6 +194,9 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             animator.animate {
                 bl.update {j, scale ->
                     animator.stop()
+                    when (scale) {
+                        1f -> view.linkedBreakLineListener?.onComplete?.invoke(j)
+                    }
                 }
             }
         }
@@ -206,4 +215,6 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class LinkedBreakLineListener(var onComplete : (Int) -> Unit)
 }

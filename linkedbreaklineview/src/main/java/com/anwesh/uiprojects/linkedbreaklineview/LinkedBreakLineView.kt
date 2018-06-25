@@ -130,6 +130,8 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             val r : Float = Math.min(w, h) / 10
             val gapDeg : Float = 360f / BL_NODES
             paint.color = Color.parseColor("#FFC107")
+            paint.strokeWidth = 1.5f
+            paint.style = Paint.Style.FILL_AND_STROKE
             if (state.scales[0] + state.scales[1] > 0) {
                 canvas.save()
                 canvas.translate(w / 2, h / 2)

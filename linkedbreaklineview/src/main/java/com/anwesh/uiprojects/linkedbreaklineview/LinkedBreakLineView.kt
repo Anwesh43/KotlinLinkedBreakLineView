@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.linkedbreaklineview
  * Created by anweshmishra on 25/06/18.
  */
 
+import android.app.Activity
 import android.view.MotionEvent
 import android.view.View
 import android.graphics.Canvas
@@ -191,6 +192,14 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             bl.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : LinkedBreakLineView {
+            val view : LinkedBreakLineView = LinkedBreakLineView(activity)
+            activity.setContentView(view)
+            return view 
         }
     }
 }

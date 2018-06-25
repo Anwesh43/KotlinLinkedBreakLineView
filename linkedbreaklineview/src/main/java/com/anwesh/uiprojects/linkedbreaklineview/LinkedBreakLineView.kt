@@ -168,4 +168,27 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(startcb)
         }
     }
+
+    data class BLRenderer(var view : LinkedBreakLineView) {
+
+        private val bl : LinkedBreakLine = LinkedBreakLine(0)
+
+        private val animator : BLAnimator = BLAnimator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor(":#212121"))
+            bl.draw(canvas, paint)
+            animator.animate {
+                bl.update {j, scale ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }

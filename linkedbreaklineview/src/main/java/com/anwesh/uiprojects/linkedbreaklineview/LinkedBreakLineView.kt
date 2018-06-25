@@ -41,9 +41,13 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             scales[j] += dir * 0.1f
             if (Math.abs(scales[j] - prevScale) > 1) {
                 scales[j] = prevScale + dir
-                dir = 0f
-                prevScale = scales[j]
-                stopcb(prevScale)
+                j += dir.toInt()
+                if (j == scales.size || j == -1) {
+                    j -= dir.toInt()
+                    dir = 0f
+                    prevScale = scales[j]
+                    stopcb(prevScale)
+                }
             }
         }
 
@@ -120,7 +124,7 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             paint.color = Color.parseColor("#283593")
             val index : Int = this.i % 2
             val scale : Float = index + (1 - 2 * index) * state.scales[1]
-            val x : Float = (h/2 - size) * state.scales[1]
+            val x : Float = (w/2 - size) * scale
             canvas.save()
             canvas.translate(w/2, h - gap * i - gap * state.scales[0])
             for (i in 0..1) {
@@ -179,7 +183,7 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
         private val animator : BLAnimator = BLAnimator(view)
 
         fun render(canvas : Canvas, paint : Paint) {
-            canvas.drawColor(Color.parseColor(":#212121"))
+            canvas.drawColor(Color.parseColor("#212121"))
             bl.draw(canvas, paint)
             animator.animate {
                 bl.update {j, scale ->
@@ -199,7 +203,7 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : LinkedBreakLineView {
             val view : LinkedBreakLineView = LinkedBreakLineView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }

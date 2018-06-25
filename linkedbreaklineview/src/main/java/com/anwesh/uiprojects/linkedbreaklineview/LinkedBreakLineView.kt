@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.RectF
 
 val BL_NODES : Int = 5
 
@@ -125,6 +126,18 @@ class LinkedBreakLineView(ctx : Context) : View(ctx) {
             val h : Float = canvas.height.toFloat()
             val gap : Float = h / BL_NODES
             val size : Float = Math.min(w, h) /10
+            prev?.draw(canvas, paint)
+            val r : Float = Math.min(w, h) / 10
+            val gapDeg : Float = 360f / BL_NODES
+            paint.color = Color.parseColor("#FFC107")
+            if (state.scales[0] + state.scales[1] > 0) {
+                canvas.save()
+                canvas.translate(w / 2, h / 2)
+                canvas.drawArc(RectF(-r, -r, r, r), i * gapDeg,
+                        (gapDeg / 2) * (state.scales[0] + state.scales[1]), true, paint)
+
+                canvas.restore()
+            }
             paint.strokeWidth = Math.min(w, h) / 50
             paint.strokeCap = Paint.Cap.ROUND
             paint.color = Color.parseColor("#283593")
